@@ -1,0 +1,63 @@
+#shopping-cart {
+  margin-top: 20px;
+
+  .quantity {
+    background-color: #eee;
+    float: left;
+    margin-right: 15px;
+    overflow: hidden;
+    position: relative;
+    width: 80px;
+
+    input {
+      background-color: #f6f6f6;
+      border: 0;
+      color: #000;
+      float: right;
+      font-size: 20px;
+      height: 15px;
+      margin: 0;
+      outline: 0;
+      padding: 0;
+      text-align: center;
+      width: 15px;
+
+      &.qty {
+        background-clip: padding-box;
+        border: 0;
+        border-radius: 0;
+        font-size: 15px;
+        font-weight: 400;
+        height: 40px;
+        padding: 10px 25px 10px 10px;
+        position: relative;
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    .minus,
+    .plus {
+      background-clip: padding-box;
+      border: 0;
+      border-radius: 0;
+      color: #bbb;
+      font-size: 20px;
+      height: 50%;
+      line-height: 0;
+      padding: 0;
+      position: absolute;
+      right: 0;
+      width: 25px;
+      z-index: 3;
+
+      &:hover {
+        background-color: #dad8da;
+      }
+    }
+
+    .minus {
+      bottom: 0;
+    }
+  }
+}

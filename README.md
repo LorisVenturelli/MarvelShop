@@ -2,7 +2,7 @@
 
 
 ## Includes :
- - React for scripting 
+ - React + TypeScript for scripting 
  - Redux for storing
  - Parcel for bundling
  - Lodash to make life easy
