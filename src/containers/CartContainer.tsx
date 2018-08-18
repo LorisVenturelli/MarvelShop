@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import '../components/Cart/Cart.scss'
 import { Link } from 'react-router-dom'
 import { SeriesCartModel } from '../constants/InterfaceTypes'
@@ -29,6 +29,16 @@ class CartContainer extends React.Component<CartProps, any> {
     this.props.updateItemUnits(product, units)
   }
 
+  private getTotal(): number {
+    let total = 0
+
+    this.props.cart.forEach((item) => {
+      total += item.price * item.units
+    })
+
+    return total
+  }
+
   render() {
     return (
       <div id="shopping-cart" className="container">
@@ -41,29 +51,34 @@ class CartContainer extends React.Component<CartProps, any> {
             </Link>
           </div>
           <div className="card-body">
-            {this.props.cart.map(product => (
-              <CartItem
-                key={product.id}
-                item={product}
-                onAddUnit={this.handleAddUnit.bind(this, product)}
-                onDeductUnit={this.handleDeductUnit.bind(this, product)}
-                handleDeleteFromCart={this.handleDeleteFromCart.bind(
-                  this,
-                  product
-                )}
-              />
-            ))}
-
-            <hr />
+            {this.props.cart.length === 0 ? (
+              <p className="text-center">Votre panier est vide</p>
+            ) : (
+              this.props.cart.map((product) => (
+                <CartItem
+                  key={product.id}
+                  item={product}
+                  onAddUnit={this.handleAddUnit.bind(this, product)}
+                  onDeductUnit={this.handleDeductUnit.bind(this, product)}
+                  handleDeleteFromCart={this.handleDeleteFromCart.bind(
+                    this,
+                    product
+                  )}
+                />
+              ))
+            )}
           </div>
-          <div className="card-footer text-right">
-            <span>
-              Total price: <b>50.00€</b>
-            </span>
-            <a href="" className="btn btn-success">
-              Checkout
-            </a>
-          </div>
+          {this.props.cart.length > 0 && (
+            <div className="card-footer text-right">
+              <span>
+                Total : <b>{this.getTotal().toFixed(2)} €</b>
+              </span>
+              <br />
+              <a href="" className="btn btn-success">
+                Valider le panier
+              </a>
+            </div>
+          )}
         </div>
       </div>
     )

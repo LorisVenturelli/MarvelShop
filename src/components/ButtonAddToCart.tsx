@@ -9,7 +9,9 @@ import { addToCart } from '../actions/cart'
 
 interface ButtonAddToCartProps {
   item: SeriesModel
-  addToCart: any
+  quantity?: number
+  addToCart?: any
+  onProductAdded?: any
 }
 
 interface ButtonAddToCartState {
@@ -31,8 +33,12 @@ class ButtonAddToCart extends React.Component<
   }
 
   addToCart() {
-    this.props.addToCart(this.props.item)
+    this.props.addToCart(this.props.item, this.props.quantity)
     this.toggle()
+
+    if (this.props.onProductAdded) {
+      this.props.onProductAdded()
+    }
   }
 
   toggle() {
@@ -47,8 +53,7 @@ class ButtonAddToCart extends React.Component<
         <button
           type="button"
           className="btn btn-primary"
-          onClick={this.addToCart}
-        >
+          onClick={this.addToCart}>
           <FontAwesomeIcon icon={faPlus} />
           Ajouter au panier
         </button>

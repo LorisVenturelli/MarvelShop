@@ -4,7 +4,6 @@ import {
   SeriesModel,
 } from '../constants/InterfaceTypes'
 import {
-  ADD_ITEM_UNITS,
   ADD_TO_CART,
   DELETE_FROM_CART,
   UPDATE_ITEM_UNITS,
@@ -18,17 +17,12 @@ export default function cartReducer<Reducer>(
 ) {
   switch (action.type) {
     case ADD_TO_CART:
-      const existingIndex = findProductIndex(state, action.payload.id)
+      const existingIndex = findProductIndex(state, action.payload.product.id)
       if (existingIndex === -1) {
-        action.payload.units = 1
-        return state.concat(action.payload)
+        action.payload.product.units = action.payload.quantity
+        return state.concat(action.payload.product)
       }
-      state[existingIndex].units += 1
-      return state.concat([])
-
-    case ADD_ITEM_UNITS:
-      const index = findProductIndex(state, action.payload.id)
-      state[index].units = state[index].units + 1
+      state[existingIndex].units += action.payload.quantity
       return state.concat([])
 
     case UPDATE_ITEM_UNITS:
@@ -43,7 +37,7 @@ export default function cartReducer<Reducer>(
       return state.concat([])
 
     case DELETE_FROM_CART:
-      const indexToDel = findProductIndex(state, action.payload.id)
+      const indexToDel = findProductIndex(state, action.payload.product.id)
       return [...state.slice(0, indexToDel), ...state.slice(indexToDel + 1)]
   }
 

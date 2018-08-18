@@ -21,7 +21,7 @@ export default class SeriesList extends React.Component<AlbumProps, any> {
           {!error &&
             isLoaded && (
               <div className="row">
-                {this.props.products.map(item => (
+                {this.props.products.map((item) => (
                   <div key={item.id} className="col-md-4">
                     <Series item={item} />
                   </div>

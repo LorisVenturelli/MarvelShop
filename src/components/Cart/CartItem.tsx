@@ -60,7 +60,7 @@ export default class CartItem extends React.Component<
           <div className="col-3 col-sm-3 col-md-6 text-md-right">
             <h6>
               <strong>
-                25.00 <span className="text-muted">x</span>
+                {item.price.toFixed(2)} <span className="text-muted">€</span>
               </strong>
             </h6>
           </div>
@@ -69,8 +69,7 @@ export default class CartItem extends React.Component<
               <button
                 type="button"
                 className="plus"
-                onClick={() => onAddUnit()}
-              >
+                onClick={() => onAddUnit()}>
                 +
               </button>
               <input
@@ -85,8 +84,7 @@ export default class CartItem extends React.Component<
               <button
                 type="button"
                 className="minus"
-                onClick={() => onDeductUnit()}
-              >
+                onClick={() => onDeductUnit()}>
                 -
               </button>
             </div>
@@ -95,8 +93,7 @@ export default class CartItem extends React.Component<
             <button
               type="button"
               className="btn btn-outline-danger btn-xs"
-              onClick={() => this.toggle()}
-            >
+              onClick={() => this.toggle()}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
 

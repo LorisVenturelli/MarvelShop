@@ -4,6 +4,10 @@ export interface SeriesModel {
   id: number
   title: string
   thumbnail: SeriesThumbnail
+  price: number
+  startYear: string
+  modified: Date
+  description: string
 }
 
 export interface SeriesCartModel extends SeriesModel {

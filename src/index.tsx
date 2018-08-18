@@ -11,10 +11,7 @@ import { getAllProducts } from './actions/product'
 import 'bootstrap/scss/bootstrap.scss'
 import './styles/index.scss'
 
-const store = createStore(
-  reducers,
-  applyMiddleware(...[reduxThunk])
-)
+const store = createStore(reducers, applyMiddleware(...[reduxThunk]))
 
 store.dispatch(
   // @ts-ignore
