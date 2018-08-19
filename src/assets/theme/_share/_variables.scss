@@ -41,7 +41,7 @@ $blue: #007bff;
 $indigo: #6610f2;
 $purple: #6f42c1;
 $pink: #e83e8c;
-$red: #dc3545;
+$red: #f0141e;
 $orange: #fd7e14;
 $yellow: #ffc107;
 $green: #28a745;
@@ -68,28 +68,24 @@ $colors: map-merge(
   $colors
 );
 
-$primary: $blue;
+$primary: $red;
 $secondary: $gray-600;
 $success: $green;
 $info: $cyan;
 $warning: $yellow;
 $danger: $red;
 $light: $gray-100;
-$dark: $gray-800;
+$dark: $black;
 
-$theme-colors: ();
-$theme-colors: map-merge(
-  (
-    'primary': $primary,
-    'secondary': $secondary,
-    'success': $success,
-    'info': $info,
-    'warning': $warning,
-    'danger': $danger,
-    'light': $light,
-    'dark': $dark,
-  ),
-  $theme-colors
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
 );
 // stylelint-enable
 
@@ -249,7 +245,7 @@ $transition-collapse: height 0.35s ease;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font-family-sans-serif: TradeGothicBold, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 $font-family-base: $font-family-sans-serif;
 // stylelint-enable value-keyword-case
@@ -721,7 +717,7 @@ $pagination-disabled-border-color: $gray-300;
 
 // Jumbotron
 
-$jumbotron-padding: 2rem;
+$jumbotron-padding: 1rem;
 $jumbotron-bg: $gray-200;
 
 // Cards

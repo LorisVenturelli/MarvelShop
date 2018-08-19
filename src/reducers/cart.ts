@@ -1,7 +1,7 @@
 import {
   AppAction,
-  SeriesCartModel,
-  SeriesModel,
+  ProductCartModel,
+  ProductModel,
 } from '../constants/InterfaceTypes'
 import {
   ADD_TO_CART,
@@ -9,7 +9,7 @@ import {
   UPDATE_ITEM_UNITS,
 } from '../constants/ActionTypes'
 
-const initialState: SeriesCartModel[] = []
+const initialState: ProductCartModel[] = []
 
 export default function cartReducer<Reducer>(
   state = initialState,
@@ -19,10 +19,10 @@ export default function cartReducer<Reducer>(
     case ADD_TO_CART:
       const existingIndex = findProductIndex(state, action.payload.product.id)
       if (existingIndex === -1) {
-        action.payload.product.units = action.payload.quantity
+        action.payload.product.quantity = action.payload.quantity
         return state.concat(action.payload.product)
       }
-      state[existingIndex].units += action.payload.quantity
+      state[existingIndex].quantity += action.payload.quantity
       return state.concat([])
 
     case UPDATE_ITEM_UNITS:
@@ -30,10 +30,13 @@ export default function cartReducer<Reducer>(
         state,
         action.payload.product.id
       )
-      if (state[existingItemIndex].units === 1 && action.payload.units === -1) {
+      if (
+        state[existingItemIndex].quantity === 1 &&
+        action.payload.quantity === -1
+      ) {
         break
       }
-      state[existingItemIndex].units += action.payload.units
+      state[existingItemIndex].quantity += action.payload.quantity
       return state.concat([])
 
     case DELETE_FROM_CART:
@@ -41,8 +44,8 @@ export default function cartReducer<Reducer>(
       return [...state.slice(0, indexToDel), ...state.slice(indexToDel + 1)]
   }
 
-  function findProductIndex(products: SeriesModel[], id: number) {
-    return products.findIndex((p: SeriesModel) => p.id === id)
+  function findProductIndex(products: ProductModel[], id: number) {
+    return products.findIndex((p: ProductModel) => p.id === id)
   }
 
   return state

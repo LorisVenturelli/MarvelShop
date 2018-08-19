@@ -5,7 +5,6 @@ const { resolve } = require('path')
 const commonConfig = require('./common')
 
 const ImageminPlugin = require('imagemin-webpack-plugin').default
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')

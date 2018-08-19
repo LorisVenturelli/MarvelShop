@@ -1,16 +1,16 @@
-import api from '../api'
+import { API } from '../api'
 import { AnyAction, Dispatch } from 'redux'
 import {
   RECEIVE_PRODUCT,
   RECEIVE_PRODUCTS_LIST,
 } from '../constants/ActionTypes'
-import { SeriesModel } from '../constants/InterfaceTypes'
+import { ProductModel } from '../constants/InterfaceTypes'
 
 export const getAllProducts = () => (dispatch: Dispatch<AnyAction>): void => {
-  api.getProducts((products: SeriesModel[]) => {
+  API.getProducts((products: ProductModel[]) => {
     dispatch({
       type: RECEIVE_PRODUCTS_LIST,
-      payload: products,
+      payload: { products },
     })
   })
 }
@@ -18,10 +18,10 @@ export const getAllProducts = () => (dispatch: Dispatch<AnyAction>): void => {
 export const getProductDetail = (id: number) => (
   dispatch: Dispatch<AnyAction>
 ): void => {
-  api.getProductDetail(id).then((product) => {
+  API.getProductDetail(id).then((product) => {
     dispatch({
       type: RECEIVE_PRODUCT,
-      payload: product,
+      payload: { product },
     })
   })
 }

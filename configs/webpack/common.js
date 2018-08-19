@@ -66,10 +66,11 @@ module.exports = {
             {
               loader: 'sass-loader',
               options: {
+                data: '@import "src/assets/theme/share";',
                 outputStyle: 'expanded',
                 sourceMap: isDev,
                 sourceMapContents: isDev,
-                precision: 10,
+                precision: 10
               },
             },
           ],

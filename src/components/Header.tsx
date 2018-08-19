@@ -3,18 +3,12 @@ import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
-import {
-  Collapse,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-} from 'reactstrap'
-import { SeriesCartModel } from '../constants/InterfaceTypes'
+import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap'
+import { ProductCartModel } from '../constants/InterfaceTypes'
+import HeaderSearch from './HeaderSearch'
 
 interface HeaderProps {
-  cart: SeriesCartModel[]
+  cart: ProductCartModel[]
 }
 
 interface HeaderState {
@@ -42,8 +36,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   private getTotalPrice() {
     let total = 0
 
-    this.props.cart.forEach((item) => {
-      total += item.price * item.units
+    this.props.cart.forEach((product) => {
+      total += product.price * product.quantity
     })
 
     return total
@@ -52,8 +46,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   private getTotalQuantity() {
     let total = 0
 
-    this.props.cart.forEach((item) => {
-      total += item.units
+    this.props.cart.forEach((product) => {
+      total += product.quantity
     })
 
     return total
@@ -63,7 +57,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     return (
       <header>
         <Navbar color="dark" dark={true} expand="md">
-          <NavbarBrand href="/">Marvel Shop</NavbarBrand>
+          <Link to="/" className="navbar-brand" />
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar={true}>
             <Nav className="mr-auto" navbar={true}>
@@ -72,6 +66,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   Accueil
                 </NavLink>
               </NavItem>
+            </Nav>
+            <Nav className="ml-auto" navbar={true}>
               <NavItem>
                 <NavLink to="/cart" className="nav-link" exact={true}>
                   <FontAwesomeIcon icon={faShoppingCart} />
@@ -85,20 +81,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   )}
                 </NavLink>
               </NavItem>
+              <NavItem className="ml-2">
+                <HeaderSearch />
+              </NavItem>
             </Nav>
-            <form className="form-inline my-2 my-lg-0">
-              <input
-                className="form-control mr-sm-2"
-                type="search"
-                placeholder="Rechercher"
-                aria-label="Search"
-              />
-              <button
-                className="btn btn-outline-primary my-2 my-sm-0"
-                type="submit">
-                Search
-              </button>
-            </form>
           </Collapse>
         </Navbar>
       </header>

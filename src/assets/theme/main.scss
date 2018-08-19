@@ -1,0 +1,15 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+@import 'share';
+
+@import 'base/base';
+@import 'base/helpers';
+@import 'base/typography';
+
+@import 'components/cards';
+@import 'components/cart';
+@import 'components/components';
+@import 'components/detail';
+
+@import '~bootstrap/scss/bootstrap';

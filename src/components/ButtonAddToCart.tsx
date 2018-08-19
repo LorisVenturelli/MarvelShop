@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { SeriesModel } from '../constants/InterfaceTypes'
+import { ProductModel } from '../constants/InterfaceTypes'
 import { connect } from 'react-redux'
 import { addToCart } from '../actions/cart'
 
 interface ButtonAddToCartProps {
-  item: SeriesModel
+  product: ProductModel
   quantity?: number
   addToCart?: any
   onProductAdded?: any
@@ -33,7 +33,7 @@ class ButtonAddToCart extends React.Component<
   }
 
   addToCart() {
-    this.props.addToCart(this.props.item, this.props.quantity)
+    this.props.addToCart(this.props.product, this.props.quantity)
     this.toggle()
 
     if (this.props.onProductAdded) {
@@ -54,8 +54,8 @@ class ButtonAddToCart extends React.Component<
           type="button"
           className="btn btn-primary"
           onClick={this.addToCart}>
-          <FontAwesomeIcon icon={faPlus} />
-          Ajouter au panier
+          <FontAwesomeIcon icon={faPlusCircle} />
+          &nbsp; Ajouter au panier
         </button>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -71,7 +71,7 @@ class ButtonAddToCart extends React.Component<
               Voir mon panier
             </Link>{' '}
             <Button color="primary" onClick={this.toggle}>
-              Continuer le shopping
+              Continuer mon shopping
             </Button>
           </ModalFooter>
         </Modal>

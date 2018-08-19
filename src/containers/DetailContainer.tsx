@@ -2,20 +2,18 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Alert } from 'reactstrap'
 import ButtonAddToCart from '../components/ButtonAddToCart'
-import { SeriesModel } from '../constants/InterfaceTypes'
+import { ProductModel } from '../constants/InterfaceTypes'
 import { getProductDetail } from '../actions/product'
-
-import './Detail.scss'
 
 interface DetailProps {
   match: any
-  products: SeriesModel[]
+  products: ProductModel[]
   getProductDetail: any
 }
 
 interface DetailState {
   productId: number
-  product: SeriesModel | null
+  product: ProductModel | null
   isLoaded: boolean
   quantity: number
 }
@@ -139,7 +137,7 @@ class DetailContainer extends React.Component<DetailProps, DetailState> {
                     <hr />
 
                     <ButtonAddToCart
-                      item={product}
+                      product={product}
                       quantity={this.state.quantity}
                       onProductAdded={() => this.onProductAdded}
                     />
@@ -156,7 +154,7 @@ class DetailContainer extends React.Component<DetailProps, DetailState> {
 
 function mapStateToProps(state: any) {
   return {
-    products: state.products,
+    products: state.products.list,
   }
 }
 

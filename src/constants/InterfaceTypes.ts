@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 
-export interface SeriesModel {
+export interface ProductModel {
   id: number
   title: string
   thumbnail: SeriesThumbnail
@@ -10,8 +10,8 @@ export interface SeriesModel {
   description: string
 }
 
-export interface SeriesCartModel extends SeriesModel {
-  units: number
+export interface ProductCartModel extends ProductModel {
+  quantity: number
 }
 
 export interface SeriesThumbnail {

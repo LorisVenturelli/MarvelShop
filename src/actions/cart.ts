@@ -3,23 +3,23 @@ import {
   DELETE_FROM_CART,
   UPDATE_ITEM_UNITS,
 } from '../constants/ActionTypes'
-import { SeriesModel } from '../constants/InterfaceTypes'
+import { ProductModel } from '../constants/InterfaceTypes'
 
-export function addToCart(product: SeriesModel, quantity = 1) {
+export function addToCart(product: ProductModel, quantity = 1) {
   return {
     type: ADD_TO_CART,
     payload: { product, quantity },
   }
 }
 
-export function updateItemUnits(product: SeriesModel, units: number) {
+export function updateItemUnits(product: ProductModel, quantity: number) {
   return {
     type: UPDATE_ITEM_UNITS,
-    payload: { product, units },
+    payload: { product, quantity },
   }
 }
 
-export function deleteFromCart(product: SeriesModel) {
+export function deleteFromCart(product: ProductModel) {
   return {
     type: DELETE_FROM_CART,
     payload: { product },

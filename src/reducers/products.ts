@@ -1,4 +1,4 @@
-import { AppAction, SeriesModel } from '../constants/InterfaceTypes'
+import { AppAction, ProductModel } from '../constants/InterfaceTypes'
 import {
   RECEIVE_PRODUCT,
   RECEIVE_PRODUCTS_LIST,
@@ -8,9 +8,16 @@ interface PricesState {
   productId: number
   price: number
 }
-const pricesList: PricesState[] = []
 
-const initialState: SeriesModel[] = []
+interface ProductsReducer {
+  pricesList: PricesState[]
+  list: ProductModel[]
+}
+
+const initialState: ProductsReducer = {
+  pricesList: [],
+  list: [],
+}
 
 export default function productsReducer<Reducer>(
   state = initialState,
@@ -18,36 +25,31 @@ export default function productsReducer<Reducer>(
 ) {
   switch (action.type) {
     case RECEIVE_PRODUCT:
-      parsePriceOnProduct(action.payload)
-      const founded = state.find(
-        (productState) => productState.id === action.payload.id
-      )
-      if (!founded) {
-        return state.concat(action.payload)
-      }
-      return state.concat([])
+      parsePriceOnProduct(state, action.payload.product)
+      state.list = [action.payload.product]
+      return Object.assign({}, state)
 
     case RECEIVE_PRODUCTS_LIST:
-      action.payload.forEach(parsePriceOnProduct)
-      const onlyNewProducts = action.payload.filter((product: SeriesModel) => {
-        return !state.find((productState) => productState.id === product.id)
-      })
-      return state.concat(onlyNewProducts)
+      action.payload.products.forEach((product: ProductModel) =>
+        parsePriceOnProduct(state, product)
+      )
+      state.list = action.payload.products
+      return Object.assign({}, state)
   }
 
   return state
 }
 
-function parsePriceOnProduct(product: SeriesModel) {
-  let priceProduct = pricesList.find((item) => {
-    return item.productId === product.id
+function parsePriceOnProduct(state: any, product: ProductModel) {
+  let priceProduct = state.pricesList.find((price: PricesState) => {
+    return price.productId === product.id
   })
   if (!priceProduct) {
     priceProduct = {
       productId: product.id,
-      price: Math.floor(Math.random() * 30),
+      price: Math.floor(Math.random() * 30) + 10,
     }
-    pricesList.concat(priceProduct)
+    state.pricesList.push(priceProduct)
   }
   product.price = priceProduct.price
 }

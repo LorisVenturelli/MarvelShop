@@ -2,38 +2,37 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import '../components/Cart/Cart.scss'
 import { Link } from 'react-router-dom'
-import { SeriesCartModel } from '../constants/InterfaceTypes'
-import CartItem from '../components/Cart/CartItem'
+import { ProductCartModel } from '../constants/InterfaceTypes'
+import CartProduct from '../components/CartProduct'
 import { deleteFromCart, updateItemUnits } from '../actions/cart'
 
 interface CartProps {
-  cart: SeriesCartModel[]
+  cart: ProductCartModel[]
   deleteFromCart: any
   updateItemUnits: any
 }
 
 class CartContainer extends React.Component<CartProps, any> {
-  handleDeleteFromCart(product: SeriesCartModel) {
+  handleDeleteFromCart(product: ProductCartModel) {
     this.props.deleteFromCart(product)
   }
 
-  handleDeductUnit(product: SeriesCartModel) {
-    const units = -1
-    this.props.updateItemUnits(product, units)
+  handleDeductUnit(product: ProductCartModel) {
+    const quantity = -1
+    this.props.updateItemUnits(product, quantity)
   }
 
-  handleAddUnit(product: SeriesCartModel) {
-    const units = 1
-    this.props.updateItemUnits(product, units)
+  handleAddUnit(product: ProductCartModel) {
+    const quantity = 1
+    this.props.updateItemUnits(product, quantity)
   }
 
   private getTotal(): number {
     let total = 0
 
-    this.props.cart.forEach((item) => {
-      total += item.price * item.units
+    this.props.cart.forEach((product) => {
+      total += product.price * product.quantity
     })
 
     return total
@@ -45,9 +44,9 @@ class CartContainer extends React.Component<CartProps, any> {
         <div className="card">
           <div className="card-header bg-dark text-light">
             <FontAwesomeIcon icon={faShoppingCart} />
-            &nbsp; Votre panier
-            <Link to="/" className="btn btn-outline-info btn-sm float-right">
-              Continuer votre shopping
+            &nbsp; Mon panier
+            <Link to="/" className="btn btn-outline-primary btn-sm float-right">
+              Continuer mon shopping
             </Link>
           </div>
           <div className="card-body">
@@ -55,9 +54,9 @@ class CartContainer extends React.Component<CartProps, any> {
               <p className="text-center">Votre panier est vide</p>
             ) : (
               this.props.cart.map((product) => (
-                <CartItem
+                <CartProduct
                   key={product.id}
-                  item={product}
+                  product={product}
                   onAddUnit={this.handleAddUnit.bind(this, product)}
                   onDeductUnit={this.handleDeductUnit.bind(this, product)}
                   handleDeleteFromCart={this.handleDeleteFromCart.bind(
@@ -73,10 +72,6 @@ class CartContainer extends React.Component<CartProps, any> {
               <span>
                 Total : <b>{this.getTotal().toFixed(2)} €</b>
               </span>
-              <br />
-              <a href="" className="btn btn-success">
-                Valider le panier
-              </a>
             </div>
           )}
         </div>

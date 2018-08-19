@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { SeriesCartModel } from '../../constants/InterfaceTypes'
+import { ProductCartModel } from '../constants/InterfaceTypes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 interface CartItemProps {
-  item: SeriesCartModel
+  product: ProductCartModel
   onAddUnit: any
   onDeductUnit: any
   handleDeleteFromCart: any
@@ -15,7 +15,7 @@ interface CartItemState {
   modal: boolean
 }
 
-export default class CartItem extends React.Component<
+export default class CartProduct extends React.Component<
   CartItemProps,
   CartItemState
 > {
@@ -35,14 +35,14 @@ export default class CartItem extends React.Component<
   }
 
   render() {
-    const { item, onAddUnit, onDeductUnit, handleDeleteFromCart } = this.props
+    const { product, onAddUnit, onDeductUnit, handleDeleteFromCart } = this.props
 
     return (
       <div className="row">
         <div className="col-12 col-sm-12 col-md-2 text-center">
           <img
             className="img-responsive"
-            src={item.thumbnail.path + '.' + item.thumbnail.extension}
+            src={product.thumbnail.path + '.' + product.thumbnail.extension}
             alt="prewiew"
             width="120"
             height="80"
@@ -50,17 +50,17 @@ export default class CartItem extends React.Component<
         </div>
         <div className="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
           <h4 className="item-name">
-            <strong>{item.title}</strong>
+            <strong>{product.title}</strong>
           </h4>
           <h4>
-            <small>Quantité : {item.units}</small>
+            <small>Quantité : {product.quantity}</small>
           </h4>
         </div>
         <div className="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
           <div className="col-3 col-sm-3 col-md-6 text-md-right">
             <h6>
               <strong>
-                {item.price.toFixed(2)} <span className="text-muted">€</span>
+                {product.price.toFixed(2)} <span className="text-muted">€</span>
               </strong>
             </h6>
           </div>
@@ -77,7 +77,7 @@ export default class CartItem extends React.Component<
                 step="1"
                 max="99"
                 min="1"
-                value={item.units.toString()}
+                value={product.quantity.toString()}
                 className="qty"
                 readOnly={true}
               />
@@ -97,7 +97,7 @@ export default class CartItem extends React.Component<
               <FontAwesomeIcon icon={faTrash} />
             </button>
 
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className="">
+            <Modal isOpen={this.state.modal} toggle={this.toggle}>
               <ModalHeader toggle={this.toggle}>
                 Supprimer un article du panier
               </ModalHeader>

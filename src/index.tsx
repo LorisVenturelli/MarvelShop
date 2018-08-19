@@ -6,17 +6,10 @@ import { Provider } from 'react-redux'
 
 import reducers from './reducers'
 import App from './containers/App'
-import { getAllProducts } from './actions/product'
 
-import 'bootstrap/scss/bootstrap.scss'
-import './styles/index.scss'
+import './assets/theme/main.scss'
 
 const store = createStore(reducers, applyMiddleware(...[reduxThunk]))
-
-store.dispatch(
-  // @ts-ignore
-  getAllProducts()
-)
 
 render(
   <Provider store={store}>
