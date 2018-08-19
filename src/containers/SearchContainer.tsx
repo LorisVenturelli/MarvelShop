@@ -60,7 +60,10 @@ class SearchContainer extends React.Component<SearchProps, SearchState> {
     this.doSearch()
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(newProps: any) {
+    // Force new props params because this function is executed before the props was updated with new values
+    this.props.match.params.query = newProps.match.params.query
+    this.props.match.params.page = newProps.match.params.page
     this.doSearch()
   }
 
