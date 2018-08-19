@@ -1,4 +1,8 @@
 #shopping-cart {
+  img {
+    object-fit: contain;
+  }
+
   .quantity {
     background-color: #eee;
     float: left;

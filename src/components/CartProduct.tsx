@@ -57,18 +57,15 @@ export default class CartProduct extends React.Component<
           <h4 className="item-name">
             <strong>{product.title}</strong>
           </h4>
-          <h4>
-            <small>Quantité : {product.quantity}</small>
-          </h4>
+          <small>Format : {product.format}</small>
         </div>
         <div className="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
           <div className="col-3 col-sm-3 col-md-6 text-md-right">
-            <h6>
-              <strong>
-                {product.prices[0].price.toFixed(2)}{' '}
-                <span className="text-muted">€</span>
-              </strong>
-            </h6>
+            <strong>
+              {product.prices[0].price === 0.0
+                ? 'Gratuit'
+                : `${product.prices[0].price} €`}
+            </strong>
           </div>
           <div className="col-4 col-sm-4 col-md-4">
             <div className="quantity">
@@ -102,25 +99,25 @@ export default class CartProduct extends React.Component<
               onClick={() => this.toggle()}>
               <FontAwesomeIcon icon={faTrash} />
             </button>
-
-            <Modal isOpen={this.state.modal} toggle={this.toggle}>
-              <ModalHeader toggle={this.toggle}>
-                Supprimer un article du panier
-              </ModalHeader>
-              <ModalBody>
-                Confirmez-vous la suppression de cette article ?
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary" onClick={this.toggle}>
-                  Anuler
-                </Button>{' '}
-                <Button color="danger" onClick={() => handleDeleteFromCart()}>
-                  Supprimer
-                </Button>
-              </ModalFooter>
-            </Modal>
           </div>
         </div>
+
+        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>
+            Supprimer un article du panier
+          </ModalHeader>
+          <ModalBody>
+            Confirmez-vous la suppression de cette article ?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggle}>
+              Anuler
+            </Button>{' '}
+            <Button color="danger" onClick={() => handleDeleteFromCart()}>
+              Supprimer
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
     )
   }

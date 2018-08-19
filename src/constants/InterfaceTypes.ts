@@ -5,8 +5,9 @@ export interface ProductModel {
   title: string
   thumbnail: ProductThumbnail
   prices: ProductPrices[]
-  startYear: string
   description: string
+  format: string
+  dates: ProductDates[]
 }
 
 export interface ProductCartModel extends ProductModel {
@@ -21,6 +22,11 @@ export interface ProductThumbnail {
 export interface ProductPrices {
   type: string
   price: number
+}
+
+export interface ProductDates {
+  type: string
+  date: Date
 }
 
 export interface CartAction extends Action {

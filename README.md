@@ -1,20 +1,42 @@
 # Marvel Shop
 
-
-## Includes :
- - React + TypeScript for scripting 
- - Redux for storing
- - Parcel for bundling
- - Lodash to make life easy
+## Includes
+ - React v16.4.2 + TypeScript v2.9.2 for scripting 
+ - Redux v4 for storing
+ - TSLint + Stylelint + Prettier for code quality
+ - Webpack v4.16.5 for bundling
  - PostCSS + SCSS for styling
- - Mocha for Testing
+ - Bootstrap v4.1.3 + Fontawesome v5.2 for UI
 
-## Lets start!
-1. Install Dependencies
+## Let's start !
 ```
-yarn install or npm install
+$ npm install
+$ npm run dev
+$ open http://localhost:8080
+$ echo "Enjoy :)"
 ```
-2. Run!
+
+## Others tools
+##### Build the project
 ```
-yarn start or npm run start
+$ npm run build
+```
+##### Lint TS + SCSS
+```
+$ npm run lint
+$ npm run lint:fix
+```
+##### Lint TS 
+```
+$ npm run tslint
+$ npm run tslint:fix
+```
+##### Lint SCSS 
+```
+$ npm run stylelint
+$ npm run stylelint:fix
+```
+##### Run prettier 
+```
+$ npm run prettier
 ```

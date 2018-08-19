@@ -107,25 +107,35 @@ class DetailContainer extends React.Component<DetailProps, DetailState> {
                 <article className="card-body">
                   <p className="price-detail-wrap">
                     <span className="price h3 text-warning">
-                      <span className="currency">EUR €</span>
-                      <span className="num">
-                        {product.prices[0].price.toFixed(2)}
+                      <span className="currency">
+                        {product.prices[0].price === 0.0
+                          ? 'Gratuit'
+                          : `${product.prices[0].price} €`}
                       </span>
                     </span>
                   </p>
 
-                  {product.description && (
-                    <dl className="item-property">
-                      <dt>Description</dt>
-                      <dd>
-                        <p>{product.description}</p>
-                      </dd>
-                    </dl>
-                  )}
+                  <hr />
+
+                  <dl className="item-property">
+                    <dt>Description</dt>
+                    <dd>
+                      <p>
+                        {product.description
+                          ? product.description
+                          : 'Non disponible'}
+                      </p>
+                    </dd>
+                  </dl>
 
                   <dl className="param param-feature">
-                    <dt>Année</dt>
-                    <dd>{product.startYear}</dd>
+                    <dt>Format</dt>
+                    <dd>{product.format}</dd>
+                  </dl>
+
+                  <dl className="param param-feature">
+                    <dt>Date de publication</dt>
+                    <dd>{new Date(product.dates[0].date).toLocaleString()}</dd>
                   </dl>
 
                   <hr />
