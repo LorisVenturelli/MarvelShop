@@ -1,9 +1,10 @@
 import * as React from 'react'
-import Jumbotron from '../components/Jumbotron'
-import ProductList from '../components/ProductList'
 import { connect } from 'react-redux'
 import { getAllProducts } from '../actions/product'
 import { withRouter } from 'react-router'
+
+import Jumbotron from '../components/Jumbotron'
+import ProductList from '../components/ProductList'
 
 class HomeContainer extends React.Component<any, any> {
   constructor(props: any) {
@@ -34,6 +35,7 @@ function mapStateToProps(state: any) {
 }
 
 export default withRouter(
+  // Ignore TS error ... bad packages compatibility ?
   // @ts-ignore
   connect(
     mapStateToProps,

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import { Alert } from 'reactstrap'
 import ButtonAddToCart from '../components/ButtonAddToCart'
 import { ProductModel } from '../constants/InterfaceTypes'
@@ -158,9 +159,13 @@ function mapStateToProps(state: any) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    getProductDetail,
-  }
-)(DetailContainer)
+export default withRouter(
+  // Ignore TS error ... bad packages compatibility ?
+  // @ts-ignore
+  connect(
+    mapStateToProps,
+    {
+      getProductDetail,
+    }
+  )(DetailContainer)
+)

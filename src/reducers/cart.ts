@@ -1,5 +1,5 @@
 import {
-  AppAction,
+  CartAction,
   ProductCartModel,
   ProductModel,
 } from '../constants/InterfaceTypes'
@@ -13,7 +13,7 @@ const initialState: ProductCartModel[] = []
 
 export default function cartReducer<Reducer>(
   state = initialState,
-  action: AppAction
+  action: CartAction
 ) {
   switch (action.type) {
     case ADD_TO_CART:
@@ -45,7 +45,7 @@ export default function cartReducer<Reducer>(
   }
 
   function findProductIndex(products: ProductModel[], id: number) {
-    return products.findIndex((p: ProductModel) => p.id === id)
+    return products.findIndex((product: ProductModel) => product.id === id)
   }
 
   return state

@@ -19,6 +19,30 @@ export interface SeriesThumbnail {
   path: string
 }
 
-export interface AppAction extends Action {
-  payload: any
+export interface ProductAction extends Action {
+  payload: ProductPayloadAction
+}
+
+export interface ProductPayloadAction {
+  product: ProductModel
+  products: ProductModel[]
+}
+
+export interface PricesState {
+  productId: number
+  price: number
+}
+
+export interface ProductsReducer {
+  pricesList: PricesState[]
+  list: ProductModel[]
+}
+
+export interface CartAction extends Action {
+  payload: CartPayloadAction
+}
+
+export interface CartPayloadAction {
+  product: ProductCartModel
+  quantity: number
 }

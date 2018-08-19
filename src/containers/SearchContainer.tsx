@@ -104,6 +104,7 @@ function mapStateToProps(state: any) {
 }
 
 export default withRouter(
+  // Ignore TS error ... bad packages compatibility ?
   // @ts-ignore
   connect(
     mapStateToProps,

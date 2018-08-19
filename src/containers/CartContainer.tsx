@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { ProductCartModel } from '../constants/InterfaceTypes'
 import CartProduct from '../components/CartProduct'
 import { deleteFromCart, updateItemUnits } from '../actions/cart'
@@ -86,10 +86,14 @@ function mapStateToProps(state: any) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    deleteFromCart,
-    updateItemUnits,
-  }
-)(CartContainer)
+export default withRouter(
+  // Ignore TS error ... bad packages compatibility ?
+  // @ts-ignore
+  connect(
+    mapStateToProps,
+    {
+      deleteFromCart,
+      updateItemUnits,
+    }
+  )(CartContainer)
+)

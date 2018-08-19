@@ -1,18 +1,8 @@
-import { AppAction, ProductModel } from '../constants/InterfaceTypes'
+import { PricesState, ProductAction, ProductModel, ProductsReducer } from '../constants/InterfaceTypes'
 import {
   RECEIVE_PRODUCT,
   RECEIVE_PRODUCTS_LIST,
 } from '../constants/ActionTypes'
-
-interface PricesState {
-  productId: number
-  price: number
-}
-
-interface ProductsReducer {
-  pricesList: PricesState[]
-  list: ProductModel[]
-}
 
 const initialState: ProductsReducer = {
   pricesList: [],
@@ -21,7 +11,7 @@ const initialState: ProductsReducer = {
 
 export default function productsReducer<Reducer>(
   state = initialState,
-  action: AppAction
+  action: ProductAction
 ) {
   switch (action.type) {
     case RECEIVE_PRODUCT:
