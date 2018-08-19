@@ -15,7 +15,7 @@ export default class ProductList extends React.Component<
       <div className="container">
         <div className="row">
           {this.props.products.map((product) => (
-            <div key={product.id} className="col-md-3 col-sm-4">
+            <div key={product.id} className="col-lg-3 col-md-4 col-sm-6">
               <Product product={product} />
             </div>
           ))}

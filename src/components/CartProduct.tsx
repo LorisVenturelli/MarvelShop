@@ -4,22 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
-interface CartItemProps {
+interface CartProductProps {
   product: ProductCartModel
   onAddUnit: any
   onDeductUnit: any
   handleDeleteFromCart: any
 }
 
-interface CartItemState {
+interface CartProductState {
   modal: boolean
 }
 
 export default class CartProduct extends React.Component<
-  CartItemProps,
-  CartItemState
+  CartProductProps,
+  CartProductState
 > {
-  constructor(props: CartItemProps) {
+  constructor(props: CartProductProps) {
     super(props)
     this.state = {
       modal: false,
@@ -35,7 +35,12 @@ export default class CartProduct extends React.Component<
   }
 
   render() {
-    const { product, onAddUnit, onDeductUnit, handleDeleteFromCart } = this.props
+    const {
+      product,
+      onAddUnit,
+      onDeductUnit,
+      handleDeleteFromCart,
+    } = this.props
 
     return (
       <div className="row">
@@ -60,7 +65,8 @@ export default class CartProduct extends React.Component<
           <div className="col-3 col-sm-3 col-md-6 text-md-right">
             <h6>
               <strong>
-                {product.price.toFixed(2)} <span className="text-muted">€</span>
+                {product.prices[0].price.toFixed(2)}{' '}
+                <span className="text-muted">€</span>
               </strong>
             </h6>
           </div>

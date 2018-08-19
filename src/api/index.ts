@@ -1,27 +1,25 @@
 const API_URL = 'https://gateway.marvel.com:443/v1/public'
 const API_KEY = '552047a68134184a0ef52f1a273e8c32'
-const CONTAINS = 'magazine'
 
 export const API = {
-  getProducts: (callback: any) => {
-    fetch(
-      `${API_URL}/series?apikey=${API_KEY}&contains=${CONTAINS}&orderBy=-startYear&limit=12`
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        callback(result.data.results)
-      })
-  },
-  getProductDetail: (id: number) => {
-    return fetch(`${API_URL}/series/${id}?apikey=${API_KEY}`)
-      .then((res) => res.json())
-      .then((result) => result.data.results[0])
-  },
-  search: (query: string, limit = 50, offset = 0) => {
+  getLastProducts: (limit = 12) => {
     return fetch(
-      `${API_URL}/series?apikey=${API_KEY}&titleStartsWith=${query}&contains=${CONTAINS}&orderBy=title&limit=${limit}&offset=${offset}`
+      `${API_URL}/comics?apikey=${API_KEY}&orderBy=-onsaleDate&hasDigitalIssue=false&limit=${limit}`
     )
       .then((res) => res.json())
       .then((result) => result.data.results)
+  },
+  getProductDetail: (id: number) => {
+    return fetch(`${API_URL}/comics/${id}?apikey=${API_KEY}`)
+      .then((res) => res.json())
+      .then((result) => result.data.results[0])
+  },
+  search: (query: string, limit = 20, page = 1) => {
+    return fetch(
+      `${API_URL}/comics?apikey=${API_KEY}&titleStartsWith=${query}&orderBy=-onsaleDate&hasDigitalIssue=false&limit=${limit}&offset=${page -
+        1}`
+    )
+      .then((res) => res.json())
+      .then((result) => result.data)
   },
 }

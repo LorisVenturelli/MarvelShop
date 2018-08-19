@@ -37,7 +37,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     let total = 0
 
     this.props.cart.forEach((product) => {
-      total += product.price * product.quantity
+      total += product.prices[0].price * product.quantity
     })
 
     return total
@@ -57,35 +57,37 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     return (
       <header>
         <Navbar color="dark" dark={true} expand="md">
-          <Link to="/" className="navbar-brand" />
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar={true}>
-            <Nav className="mr-auto" navbar={true}>
-              <NavItem>
-                <NavLink to="/" className="nav-link" exact={true}>
-                  Accueil
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <Nav className="ml-auto" navbar={true}>
-              <NavItem>
-                <NavLink to="/cart" className="nav-link" exact={true}>
-                  <FontAwesomeIcon icon={faShoppingCart} />
-                  &nbsp; Panier
-                  {this.getTotalQuantity() > 0 && (
-                    <span>
-                      &nbsp;(
-                      {this.getTotalQuantity()} -{' '}
-                      {this.getTotalPrice().toFixed(2)} €)
-                    </span>
-                  )}
-                </NavLink>
-              </NavItem>
-              <NavItem className="ml-2">
-                <HeaderSearch />
-              </NavItem>
-            </Nav>
-          </Collapse>
+          <div className="container">
+            <Link to="/" className="navbar-brand" />
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar={true}>
+              <Nav className="mr-auto" navbar={true}>
+                <NavItem>
+                  <NavLink to="/" className="nav-link" exact={true}>
+                    Accueil
+                  </NavLink>
+                </NavItem>
+              </Nav>
+              <Nav className="ml-auto" navbar={true}>
+                <NavItem>
+                  <NavLink to="/cart" className="nav-link" exact={true}>
+                    <FontAwesomeIcon icon={faShoppingCart} />
+                    &nbsp; Panier
+                    {this.getTotalQuantity() > 0 && (
+                      <span>
+                        &nbsp;(
+                        {this.getTotalQuantity()} -{' '}
+                        {this.getTotalPrice().toFixed(2)} €)
+                      </span>
+                    )}
+                  </NavLink>
+                </NavItem>
+                <NavItem className="ml-2">
+                  <HeaderSearch />
+                </NavItem>
+              </Nav>
+            </Collapse>
+          </div>
         </Navbar>
       </header>
     )

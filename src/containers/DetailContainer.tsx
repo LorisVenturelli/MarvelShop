@@ -1,21 +1,21 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { Alert } from 'reactstrap'
+import { connect } from 'react-redux'
 import ButtonAddToCart from '../components/ButtonAddToCart'
-import { ProductModel } from '../constants/InterfaceTypes'
-import { getProductDetail } from '../actions/product'
+import { AjaxState, ProductModel } from '../constants/InterfaceTypes'
+import Jumbotron from '../components/Jumbotron'
+import { API } from '../api'
+import AlertLoading from '../components/AlertLoading'
+import AlertError from '../components/AlertError'
 
 interface DetailProps {
   match: any
   products: ProductModel[]
-  getProductDetail: any
 }
 
-interface DetailState {
+interface DetailState extends AjaxState {
   productId: number
   product: ProductModel | null
-  isLoaded: boolean
   quantity: number
 }
 
@@ -26,30 +26,29 @@ class DetailContainer extends React.Component<DetailProps, DetailState> {
     this.state = {
       productId: parseInt(this.props.match.params.id, 10),
       product: null,
-      isLoaded: false,
       quantity: 1,
+      isLoaded: false,
+      error: false,
     }
-
-    this.props.getProductDetail(this.props.match.params.id)
 
     this.handlerQuantityChange = this.handlerQuantityChange.bind(this)
     this.onProductAdded = this.onProductAdded.bind(this)
   }
 
-  componentDidUpdate() {
-    if (this.state.product) {
-      return
-    }
-
-    const product = this.props.products.find(
-      (product) => product.id === this.state.productId
-    )
-    if (product) {
-      this.setState({
-        product,
-        isLoaded: true,
+  componentWillMount() {
+    API.getProductDetail(this.state.productId)
+      .then((product: ProductModel) => {
+        this.setState({
+          product,
+          isLoaded: true,
+        })
       })
-    }
+      .catch(() => {
+        this.setState({
+          error: true,
+          isLoaded: true,
+        })
+      })
   }
 
   private handlerQuantityChange(event: any) {
@@ -65,98 +64,106 @@ class DetailContainer extends React.Component<DetailProps, DetailState> {
   }
 
   render() {
-    const { isLoaded, product } = this.state
+    const { isLoaded, error, product } = this.state
+
+    if (!isLoaded) {
+      return (
+        <div className="container mt-5">
+          <AlertLoading />
+        </div>
+      )
+    } else if (!product || error) {
+      return (
+        <div className="container mt-5">
+          <AlertError />
+        </div>
+      )
+    }
 
     return (
-      <div className="container">
-        {!isLoaded ? (
-          <Alert color="info">Chargement en cours ...</Alert>
-        ) : (
-          product && (
-            <div className="card">
-              <div className="row">
-                <aside className="col-sm-5 border-right">
-                  <article className="gallery-wrap">
-                    <div className="img-big-wrap">
-                      <img
-                        src={
-                          product.thumbnail.path +
-                          '.' +
-                          product.thumbnail.extension
-                        }
-                      />
-                    </div>
-                  </article>
-                </aside>
+      <div>
+        <Jumbotron>
+          <h1 className="jumbotron-heading">{product.title}</h1>
+        </Jumbotron>
 
-                <aside className="col-sm-7">
-                  <article className="card-body p-5">
-                    <h3 className="title mb-3">{product.title}</h3>
+        <div className="container app-content">
+          <div className="card">
+            <div className="row">
+              <aside className="col-sm-4">
+                <article className="gallery-wrap">
+                  <div className="img-big-wrap">
+                    <img
+                      src={
+                        product.thumbnail.path +
+                        '.' +
+                        product.thumbnail.extension
+                      }
+                    />
+                  </div>
+                </article>
+              </aside>
 
-                    <p className="price-detail-wrap">
-                      <span className="price h3 text-warning">
-                        <span className="currency">EUR €</span>
-                        <span className="num">{product.price.toFixed(2)}</span>
+              <aside className="col-sm-8">
+                <article className="card-body">
+                  <p className="price-detail-wrap">
+                    <span className="price h3 text-warning">
+                      <span className="currency">EUR €</span>
+                      <span className="num">
+                        {product.prices[0].price.toFixed(2)}
                       </span>
-                    </p>
-                    {product.description && (
-                      <dl className="item-property">
-                        <dt>Description</dt>
-                        <dd>
-                          <p>
-                            Here goes description consectetur adipisicing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco{' '}
-                          </p>
-                        </dd>
-                      </dl>
-                    )}
+                    </span>
+                  </p>
 
-                    <dl className="param param-feature">
-                      <dt>Année</dt>
-                      <dd>{product.startYear}</dd>
-                    </dl>
-
-                    <hr />
-
-                    <dl className="param param-inline">
-                      <dt>Quantité:</dt>
+                  {product.description && (
+                    <dl className="item-property">
+                      <dt>Description</dt>
                       <dd>
-                        <select
-                          className="form-control form-control-sm"
-                          onChange={this.handlerQuantityChange}>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                        </select>
+                        <p>{product.description}</p>
                       </dd>
                     </dl>
+                  )}
 
-                    <hr />
+                  <dl className="param param-feature">
+                    <dt>Année</dt>
+                    <dd>{product.startYear}</dd>
+                  </dl>
 
-                    <ButtonAddToCart
-                      product={product}
-                      quantity={this.state.quantity}
-                      onProductAdded={() => this.onProductAdded}
-                    />
-                  </article>
-                </aside>
-              </div>
+                  <hr />
+
+                  <dl className="param param-inline">
+                    <dt>Quantité:</dt>
+                    <dd>
+                      <select
+                        className="form-control form-control-sm w-25"
+                        onChange={this.handlerQuantityChange}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </dd>
+                  </dl>
+
+                  <hr />
+
+                  <ButtonAddToCart
+                    product={product}
+                    quantity={this.state.quantity}
+                    onProductAdded={() => this.onProductAdded}
+                  />
+                </article>
+              </aside>
             </div>
-          )
-        )}
+          </div>
+        </div>
       </div>
     )
   }
 }
 
 function mapStateToProps(state: any) {
-  return {
-    products: state.products.list,
-  }
+  return {}
 }
 
 export default withRouter(
@@ -164,8 +171,6 @@ export default withRouter(
   // @ts-ignore
   connect(
     mapStateToProps,
-    {
-      getProductDetail,
-    }
+    {}
   )(DetailContainer)
 )

@@ -22,7 +22,11 @@ export default class Product extends React.Component<ProductProps, any> {
           <h5 className="card-title">
             <Link to={`/product/${product.id}`}>{product.title}</Link>
           </h5>
-          {product.price && <h6>{product.price.toFixed(2)} €</h6>}
+          <h6>
+            {product.prices[0].price === 0.0
+              ? 'Gratuit'
+              : `${product.prices[0].price} €`}
+          </h6>
           <ButtonAddToCart product={product} />
         </div>
       </div>

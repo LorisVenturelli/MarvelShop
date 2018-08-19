@@ -2,12 +2,25 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import Jumbotron from '../components/Jumbotron'
 import ProductList from '../components/ProductList'
-import { ProductModel } from '../constants/InterfaceTypes'
-import { Alert } from 'reactstrap'
+import {
+  AjaxState,
+  ApiResponse,
+  PaginationState,
+  ProductModel,
+} from '../constants/InterfaceTypes'
+import { Alert, Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import { withRouter } from 'react-router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { search } from '../actions/search'
+import {
+  faChevronLeft,
+  faChevronRight,
+  faSpinner,
+} from '@fortawesome/free-solid-svg-icons'
+import { API } from '../api'
+import { Link } from 'react-router-dom'
+import AlertSearchProgress from '../components/AlertSearchProgress'
+import AlertError from '../components/AlertError'
+import AlertNoResult from '../components/AlertNoResult'
 
 interface SearchProps {
   match: any
@@ -15,11 +28,10 @@ interface SearchProps {
   products: ProductModel[]
 }
 
-interface SearchState {
+interface SearchState extends AjaxState {
   query: string
-  isLoaded: boolean
   products: ProductModel[]
-  error: boolean
+  pagination: PaginationState
 }
 
 class SearchContainer extends React.Component<SearchProps, SearchState> {
@@ -27,11 +39,21 @@ class SearchContainer extends React.Component<SearchProps, SearchState> {
     super(props)
 
     this.state = {
-      query: this.props.match.params.query,
+      query: this.getQuery(),
       isLoaded: false,
       products: [],
       error: false,
+      pagination: {
+        total: 0,
+        page: this.getPage(),
+        limit: 30,
+      },
     }
+
+    this.getQuery = this.getQuery.bind(this)
+    this.getPage = this.getPage.bind(this)
+    this.getMaxPage = this.getMaxPage.bind(this)
+    this.getPagination = this.getPagination.bind(this)
   }
 
   componentWillMount() {
@@ -39,18 +61,7 @@ class SearchContainer extends React.Component<SearchProps, SearchState> {
   }
 
   componentWillReceiveProps() {
-    if (this.state.query !== this.props.match.params.query) {
-      this.setState({
-        query: this.props.match.params.query,
-      })
-      this.doSearch()
-    } else {
-      this.setState({
-        isLoaded: true,
-        error: false,
-        products: this.props.products,
-      })
-    }
+    this.doSearch()
   }
 
   private doSearch() {
@@ -59,7 +70,58 @@ class SearchContainer extends React.Component<SearchProps, SearchState> {
       error: false,
     })
 
-    this.props.search(this.state.query)
+    API.search(this.getQuery(), this.state.pagination.limit, this.getPage())
+      .then((response: ApiResponse) => {
+        this.setState({
+          products: response.results,
+          isLoaded: true,
+          pagination: Object.assign(this.state.pagination, {
+            total: response.total,
+          }),
+        })
+      })
+      .catch(() => {
+        this.setState({
+          error: true,
+          isLoaded: true,
+        })
+      })
+  }
+
+  private getQuery(): string {
+    return this.props.match.params.query || null
+  }
+
+  private getPage(): number {
+    if (this.props.match.params.page) {
+      return parseInt(this.props.match.params.page, 10)
+    }
+
+    return 1
+  }
+  private getMaxPage(): number {
+    return Math.ceil(this.state.pagination.total / this.state.pagination.limit)
+  }
+
+  private getPagination() {
+    const maxPage = this.getMaxPage()
+    const pageNumbers = []
+
+    for (let i = 1; i <= maxPage; i++) {
+      pageNumbers.push(i)
+    }
+
+    return pageNumbers.map((number) => {
+      return (
+        <PaginationItem key={number} active={this.getPage() === number}>
+          <Link
+            to={`/search/${this.getQuery()}/${number}`}
+            className="page-link">
+            {number}
+          </Link>
+        </PaginationItem>
+      )
+    })
   }
 
   render() {
@@ -69,27 +131,48 @@ class SearchContainer extends React.Component<SearchProps, SearchState> {
       <div>
         <Jumbotron>
           <h1 className="jumbotron-heading">Rechercher</h1>
-          <div className="lead text-muted m-0">
-            {this.props.match.params.query}
-          </div>
+          <div className="lead text-muted m-0">{this.getQuery()}</div>
         </Jumbotron>
 
-        <div className="container">
+        <div className="container app-content">
           {!isLoaded ? (
-            <Alert color="info" className="text-center">
-              <FontAwesomeIcon icon={faSpinner} spin={true} />
-              &nbsp; Recherche en cours ...
-            </Alert>
+            <AlertSearchProgress />
           ) : error ? (
-            <Alert color="danger" className="text-center">
-              Une erreur est survenue :(
-            </Alert>
+            <AlertError />
           ) : products.length === 0 ? (
-            <Alert color="info" className="text-center">
-              Aucun résultat
-            </Alert>
+            <AlertNoResult />
           ) : (
-            <ProductList products={products} />
+            <div>
+              <ProductList products={products} />
+
+              <Pagination
+                listClassName="justify-content-center"
+                className="m-5">
+                <PaginationItem disabled={this.getPage() === 1}>
+                  <Link
+                    to={
+                      this.getPage() > 1
+                        ? `/search/${this.getQuery()}/${this.getPage() - 1}`
+                        : ''
+                    }
+                    className="page-link">
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                  </Link>
+                </PaginationItem>
+                {this.getPagination()}
+                <PaginationItem disabled={this.getPage() === this.getMaxPage()}>
+                  <Link
+                    to={
+                      this.getPage() < this.getMaxPage()
+                        ? `/search/${this.getQuery()}/${this.getPage() + 1}`
+                        : ''
+                    }
+                    className="page-link">
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </Link>
+                </PaginationItem>
+              </Pagination>
+            </div>
           )}
         </div>
       </div>
@@ -98,9 +181,7 @@ class SearchContainer extends React.Component<SearchProps, SearchState> {
 }
 
 function mapStateToProps(state: any) {
-  return {
-    products: state.products.list,
-  }
+  return {}
 }
 
 export default withRouter(
@@ -108,8 +189,6 @@ export default withRouter(
   // @ts-ignore
   connect(
     mapStateToProps,
-    {
-      search,
-    }
+    {}
   )(SearchContainer)
 )
